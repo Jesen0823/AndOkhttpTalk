@@ -1,8 +1,5 @@
 package com.jesen.custom_okhttp.custom.chain;
 
-
-import android.util.Log;
-
 import com.jesen.custom_okhttp.custom.OkHttpClient2;
 import com.jesen.custom_okhttp.custom.RealCall2;
 import com.jesen.custom_okhttp.custom.Response2;
@@ -14,11 +11,13 @@ import java.io.IOException;
  */
 public class ReRequestInterceptor implements Interceptor2 {
 
-    private final String TAG = "ReRequestInterceptor";
+    private final String TAG = ReRequestInterceptor.class.getSimpleName();
 
     @Override
     public Response2 doNext(Chain2 chain2) throws IOException {
-        Log.d(TAG, "我是重试拦截器，执行了");
+
+        // Log.d(TAG, "我是重试拦截器，执行了");
+        System.out.println("我是重试拦截器，执行了");
 
         ChainManager chainManager = (ChainManager) chain2;
 

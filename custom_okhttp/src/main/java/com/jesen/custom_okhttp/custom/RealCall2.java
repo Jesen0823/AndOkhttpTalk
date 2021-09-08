@@ -3,8 +3,10 @@ package com.jesen.custom_okhttp.custom;
 import android.util.Log;
 
 import com.jesen.custom_okhttp.custom.chain.ChainManager;
+import com.jesen.custom_okhttp.custom.chain.ConnectionServerInterceptor;
 import com.jesen.custom_okhttp.custom.chain.Interceptor2;
 import com.jesen.custom_okhttp.custom.chain.ReRequestInterceptor;
+import com.jesen.custom_okhttp.custom.chain.RequestHeaderInterceptor;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -63,7 +65,6 @@ public class RealCall2 implements Call2 {
                     signalledCallback = true;
                     callback2.onResponse2(RealCall2.this, response2);
                 }
-
             } catch (Exception e){
                 // 责任划分
                 if (signalledCallback){
@@ -82,9 +83,10 @@ public class RealCall2 implements Call2 {
 
         List<Interceptor2> interceptors = new ArrayList<>();
         interceptors.add(new ReRequestInterceptor());
+        interceptors.add(new RequestHeaderInterceptor()); // 请求头拦截器 Response
+        interceptors.add(new ConnectionServerInterceptor()); // 连接服务器的拦截器 Response
 
         ChainManager chainManager = new ChainManager(interceptors,0,request2, RealCall2.this);
-
         return chainManager.getResponse(request2);
 
     }

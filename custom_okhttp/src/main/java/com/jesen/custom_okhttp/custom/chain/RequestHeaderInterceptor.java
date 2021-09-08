@@ -18,8 +18,8 @@ public class RequestHeaderInterceptor implements Interceptor2 {
     @Override
     public Response2 doNext(Chain2 chain2) throws IOException {
 
-        // 拼接请求头
-        ChainManager manager = (ChainManager) chain2;
+        // 拼接请求头之 请求集
+        ChainManager manager = (ChainManager) chain2; // chain2 ChainManager
         Request2 request2 = manager.getRequest();
 
         Map<String, String> mHeaderList = request2.getHeadList();
@@ -28,7 +28,7 @@ public class RequestHeaderInterceptor implements Interceptor2 {
         mHeaderList.put("Host", new SocketRequestServer().getHost(manager.getRequest()));
 
         if ("POST".equalsIgnoreCase(request2.getRequestMethod())) {
-            // 请求体   type lan
+            // 请求体   type lang
             /**
              * Content-Length: 48
              * Content-Type: application/x-www-form-urlencoded
@@ -37,6 +37,7 @@ public class RequestHeaderInterceptor implements Interceptor2 {
             mHeaderList.put("Content-Type", RequestBody2.TYPE);
         }
 
+        // ChainManager.getResponse(更新后的Request)
         return chain2.getResponse(request2); // 执行下一个拦截器（任务节点）
     }
 }

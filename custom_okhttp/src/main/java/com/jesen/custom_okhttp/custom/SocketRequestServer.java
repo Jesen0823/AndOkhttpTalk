@@ -94,4 +94,22 @@ public class SocketRequestServer {
 
         return stringBuffer.toString();
     }
+
+    /**
+     * 获得urlString HTTP or HTTPS
+     *
+     * @param urlString
+     * @return
+     */
+    public String queryHttpOrHttps(String urlString) {
+        try {
+            URL url = new URL(urlString);
+
+            return url.getProtocol();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

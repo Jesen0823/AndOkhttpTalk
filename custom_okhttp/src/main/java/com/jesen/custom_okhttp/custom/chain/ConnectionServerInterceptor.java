@@ -12,6 +12,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import javax.net.ssl.SSLSocketFactory;
+
 /**
  * 连接服务器的拦截器
  */
@@ -22,11 +24,24 @@ public class ConnectionServerInterceptor implements Interceptor2 {
     @Override
     public Response2 doNext(Chain2 chain2) throws IOException {
 
+        // 解析Reqeus
         SocketRequestServer srs = new SocketRequestServer();
 
-        Request2 request2 = chain2.getRequest();
+        Request2 request2 = chain2.getRequest(); // 更新后的Request  hostName:  post:leng type
 
-        Socket socket = new Socket(srs.getHost(request2), srs.getPort(request2));
+
+        Socket socket = new Socket(srs.getHost(request2), srs.getPort(request2));;
+
+        String result = srs.queryHttpOrHttps(request2.getUrl());
+        if (result != null) {
+            if ("HTTP".equalsIgnoreCase(result)) {
+                // 只能访问HTTP，不能访问HTTPS  S SSL 握手
+                socket = new Socket(srs.getHost(request2), srs.getPort(request2));
+            } else if ("HTTPS".equalsIgnoreCase(result)){
+                // HTTPS
+                socket = SSLSocketFactory.getDefault().createSocket(srs.getHost(request2), srs.getPort(request2));
+            }
+        }
 
         // todo 请求
         // output
@@ -41,28 +56,6 @@ public class ConnectionServerInterceptor implements Interceptor2 {
 
         // todo 响应
         final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-        // input
-//        new Thread(){
-//            @Override
-//            public void run() {
-//                super.run();
-//                String readerLine = null;
-//                while (true) {
-//                    try {
-//                        if ((readerLine = bufferedReader.readLine()) != null) {
-//                            // Log.d(TAG, "服务器响应的:" + readerLine);
-//                            System.out.println("服务器响应的:" + readerLine);
-//                        } else {
-//                            return;
-//                        }
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//            }
-//        }.start();
 
         Response2 response2 = new Response2();
 

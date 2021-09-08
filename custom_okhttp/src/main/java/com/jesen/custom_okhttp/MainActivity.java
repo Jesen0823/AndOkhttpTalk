@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         customOkHttpBtn.setOnClickListener(view -> {
             OkHttpClient2 okHttpClient2 = new OkHttpClient2.Builder2().build2();
 
-            Request2 request2 = new Request2.Builder2().url2(URL_TEST).build2();
+            Request2 request2 = new Request2.Builder2().get().url2(URL_TEST).build2();
             Call2 call2 = okHttpClient2.newCall(request2);
             call2.enqueue2(new Callback2() {
                 @Override
@@ -74,8 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onResponse2(Call2 call, Response2 response) {
-                    String ret = response.string();
-
+                    String ret = response.getBody() + " ，statusCode:"+response.getStatusCode();
                     Log.d("OKHTTP", "onResponse, body:" + ret);
                     updateUI(ret);
                 }

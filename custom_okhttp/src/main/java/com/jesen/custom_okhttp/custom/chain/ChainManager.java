@@ -53,8 +53,9 @@ public class ChainManager  implements Chain2 {
             throw new IOException("interceptors is empty");
         }
 
+
         // 取出第一个 拦截器
-        Interceptor2 interceptor2 = interceptors.get(index);
+        Interceptor2 interceptor2 = interceptors.get(index); // 0，1，2
 
         ChainManager manager = new ChainManager(interceptors, index + 1, request, call);
 
