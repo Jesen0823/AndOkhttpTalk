@@ -4,6 +4,7 @@ public class OkHttpClient2 {
 
     Dispatcher2 dispatcher2;
     boolean isCanceled;
+    int retryCount;
 
     public OkHttpClient2() {
         this(new Builder2());
@@ -12,6 +13,7 @@ public class OkHttpClient2 {
     public OkHttpClient2(Builder2 builder2) {
         dispatcher2 = builder2.dispatcher2;
         isCanceled = builder2.isCanceled;
+        retryCount = builder2.retryCount;
     }
 
     public Call2 newCall(Request2 request2) {
@@ -26,11 +28,18 @@ public class OkHttpClient2 {
         return isCanceled;
     }
 
+    public int getRecount() {
+        return retryCount;
+    }
+
 
     public final static class Builder2 {
 
         Dispatcher2 dispatcher2;
         boolean isCanceled;
+
+        // 重试次数
+        int retryCount = 3;
 
         public Builder2() {
             dispatcher2 = new Dispatcher2();
@@ -39,6 +48,11 @@ public class OkHttpClient2 {
         // 用户取消请求
         public Builder2 cancel() {
             isCanceled = true;
+            return this;
+        }
+
+        public Builder2 setRetryCount(int count){
+            this.retryCount = count;
             return this;
         }
 

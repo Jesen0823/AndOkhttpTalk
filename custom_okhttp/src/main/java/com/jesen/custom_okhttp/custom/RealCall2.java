@@ -2,7 +2,13 @@ package com.jesen.custom_okhttp.custom;
 
 import android.util.Log;
 
+import com.jesen.custom_okhttp.custom.chain.ChainManager;
+import com.jesen.custom_okhttp.custom.chain.Interceptor2;
+import com.jesen.custom_okhttp.custom.chain.ReRequestInterceptor;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RealCall2 implements Call2 {
 
@@ -28,7 +34,11 @@ public class RealCall2 implements Call2 {
         client2.dispatcher2().enqueue(new AsyncCall2(responseCallback));
     }
 
-     final class AsyncCall2 implements Runnable {
+    public OkHttpClient2 getOkHttpClient2() {
+        return client2;
+    }
+
+    final class AsyncCall2 implements Runnable {
         private Callback2 callback2;
 
         public AsyncCall2(Callback2 responseCallback) {
@@ -69,8 +79,13 @@ public class RealCall2 implements Call2 {
     }
 
     private Response2 getResponseWithInterceptorChain() throws Exception{
-        Response2 response2 = new Response2();
-        response2.setBody("流程走通....");
-        return response2;
+
+        List<Interceptor2> interceptors = new ArrayList<>();
+        interceptors.add(new ReRequestInterceptor());
+
+        ChainManager chainManager = new ChainManager(interceptors,0,request2, RealCall2.this);
+
+        return chainManager.getResponse(request2);
+
     }
 }

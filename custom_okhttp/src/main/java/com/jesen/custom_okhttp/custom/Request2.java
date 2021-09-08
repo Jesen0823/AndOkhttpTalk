@@ -16,6 +16,9 @@ public class Request2 {
     // 请求头
     private Map<String,String> mHeadList = new HashMap<>();
 
+    // 请求体
+    private RequestBody2 requestBody2;
+
     public void setUrl(String url) {
         this.url = url;
     }
@@ -28,12 +31,31 @@ public class Request2 {
         this.mHeadList = mHeadList;
     }
 
+    public Map<String, String> getHeadList() {
+        return mHeadList;
+    }
+
     public Request2() {
         this(new Builder2());
     }
 
     public Request2(Builder2 builder2) {
         this.url = builder2.url;
+        this.requestMethod = builder2.requestMethod;
+        this.mHeadList = builder2.mHeadList;
+        this.requestBody2 = builder2.requestBody2;
+    }
+
+    public String getRequestMethod() {
+        return requestMethod;
+    }
+
+    public RequestBody2 getRequestBody2() {
+        return requestBody2;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public final static class Builder2 {
@@ -41,6 +63,8 @@ public class Request2 {
         private String url;
         private String requestMethod = GET;
         private Map<String,String> mHeadList = new HashMap<>();
+        private RequestBody2 requestBody2;
+
 
         public Builder2 url2(String url) {
             this.url = url;
@@ -56,8 +80,9 @@ public class Request2 {
             return this;
         }
 
-        public Builder2 post(){
+        public Builder2 post(RequestBody2 requestBody2){
             requestMethod = POST;
+            this.requestBody2 = requestBody2;
             return this;
         }
 

@@ -13,4 +13,6 @@ public class Response2 {
         return body;
     }
 
+    public void setStatusCode(int parseInt) {
+    }
 }
