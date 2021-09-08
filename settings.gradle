@@ -8,3 +8,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "AndOkhttpTalk"
 include ':app'
+include ':custom_okhttp'
